@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+
+body {
+  font-family: 'Lato', 'Montserrat', sans-serif;
+}
+
+
+:root {
+  --dark: #2C3639;
+  --darker: #3F4E4F;
+  --brown: #A27B5C;
+  --cream: #DCD7C9;
+}
+

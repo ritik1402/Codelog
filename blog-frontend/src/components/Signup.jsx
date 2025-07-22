@@ -31,7 +31,7 @@ const Signup = () => {
 
         }
     console.log("Signup form submitted:", form);
-    navigate("/login");
+    navigate("/auth");
     
   };
 

@@ -14,16 +14,16 @@ import Hero from "./components/Hero";
 
 import { useEffect, useState } from 'react';
 
-function AppWrapper() {
-  return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
-}
+// function AppWrapper() {
+//   return (
+//     <BrowserRouter>
+//       <App />
+//     </BrowserRouter>
+//   );
+// }
 
 function App() {
-  const location = useLocation();
+  // const location = useLocation();
 
   return (
     <AuthProvider>
@@ -31,10 +31,10 @@ function App() {
         <Navbar />
 
     
-        {location.pathname === "/" && <Hero />}
+         {/* {location.pathname === "/" && <Hero />} */}
 
         <Routes>
-          <Route path="/" element={<Blogs />} />
+          <Route path="/" element={<><Hero/><Blogs /></>} />
           <Route path="/myblog" element={<MyBlogs />} />
           <Route path="/detail/:id" element={
             <ProtectedRoutes>
@@ -61,4 +61,4 @@ function App() {
   );
 }
 
-export default AppWrapper;
+export default App;

@@ -6,6 +6,8 @@ const EditBlog = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [existingImage, setExistingImage] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,7 @@ const EditBlog = () => {
         const blog = res.data;
         setTitle(blog.title);
         setContent(blog.content);
+        setExistingImage(blog.image); 
       } catch (error) {
         console.error("Failed to fetch blog:", error.response?.data || error.message);
       }
@@ -33,16 +36,17 @@ const EditBlog = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:8000/api/user/editblog/${id}`,
-        { title, content },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      if (image) formData.append("image", image);
+
+      await axios.put(`http://localhost:8000/api/user/editblog/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       navigate("/");
     } catch (error) {
@@ -79,6 +83,27 @@ const EditBlog = () => {
             className="w-full px-4 py-2 rounded bg-[#3E3E3E] text-white focus:outline-none"
             placeholder="Write your blog content here..."
             required
+          />
+        </div>
+
+        {existingImage && (
+          <div>
+            <p className="text-[#A27B5C] mb-2">Existing Image:</p>
+            <img
+              src={`http://localhost:8000${existingImage}`}
+              alt="Blog"
+              className="w-full max-h-[250px] object-cover rounded-xl mb-4"
+            />
+          </div>
+        )}
+
+        <div>
+          <label className="block text-lg font-medium mb-1 text-[#A27B5C]">Upload New Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+            className="text-white"
           />
         </div>
 

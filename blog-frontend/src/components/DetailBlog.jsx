@@ -100,13 +100,14 @@ const DetailBlog = () => {
   if (!blog) return <div className="text-white p-6">Loading blog...</div>;
 
   return (
-    <div className="p-6 bg-[#212121] text-[#DCD7C9] min-h-screen">
+    <div className="p-6  text-[#2C3639] min-h-screen">
       {blog.image && (
         <img
-          src={blog.image}
-          alt="blog"
-          className="w-full max-h-[400px] object-cover rounded-xl mb-6"
-        />
+  src={`http://localhost:8000${blog.image}`}
+  alt="blog"
+  className="w-full max-h-[400px] object-cover rounded-xl mb-6"
+/>
+
       )}
       <h1 className="text-4xl font-bold text-[#A27B5C] mb-4">{blog.title}</h1>
       <p className="text-lg mb-6">{blog.content}</p>

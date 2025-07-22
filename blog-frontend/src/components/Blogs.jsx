@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Blogs = () => {
@@ -12,7 +12,6 @@ const Blogs = () => {
       try {
         const res = await axios.get("http://localhost:8000/api/user/blogs");
 
-       
         // const blogArray = Array.isArray(res.data)
         //   ? res.data
         //   : Array.isArray(res.data.data)
@@ -32,15 +31,23 @@ const Blogs = () => {
   }, []);
 
   const truncate = (text, limit) => {
-    return text?.length > limit ? text.slice(0, limit) + '...' : text;
+    return text?.length > limit ? text.slice(0, limit) + "..." : text;
   };
 
   if (loading) {
-    return <div className="text-white text-center py-20 text-xl">Loading blogs...</div>;
+    return (
+      <div className="text-white text-center py-20 text-xl">
+        Loading blogs...
+      </div>
+    );
   }
 
   if (!blogs.length) {
-    return <div className="text-white text-center py-20 text-xl">No blogs found.</div>;
+    return (
+      <div className="text-white text-center py-20 text-xl">
+        No blogs found.
+      </div>
+    );
   }
 
   return (
@@ -52,12 +59,17 @@ const Blogs = () => {
           onClick={() => navigate(`/detail/${blog.id}`)}
         >
           <img
-            src={blog.image}
-            className="rounded-2xl h-[160px] object-cover"
+            src={`http://localhost:8000${blog.image}`}
             alt={blog.title}
+            className="rounded-2xl h-[160px] object-cover"
           />
-          <h2 className="p-2 text-2xl text-[#A27B5C] font-bold">{blog.title}</h2>
-          <h4 className="p-2 text-md text-[#DCD7C9]">{truncate(blog.content, 250)}</h4>
+
+          <h2 className="p-2 text-2xl text-[#A27B5C] font-bold">
+            {blog.title}
+          </h2>
+          <h4 className="p-2 text-md text-[#DCD7C9]">
+            {truncate(blog.content, 250)}
+          </h4>
         </div>
       ))}
     </div>

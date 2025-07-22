@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 const MyBlogs = () => {
   const navigate = useNavigate();
   const [myBlogs, setMyBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
+  
   const fetchMyBlogs = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -16,17 +20,12 @@ const MyBlogs = () => {
       }
 
       const res = await axios.get("http://localhost:8000/api/user/myblogs", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setMyBlogs(res.data);
     } catch (error) {
-      console.error(
-        "Error fetching user's blogs:",
-        error.response?.data || error.message
-      );
+      console.error("Error fetching user's blogs:", error.response?.data || error.message);
       if (error.response?.status === 401) navigate("/login");
     } finally {
       setLoading(false);
@@ -37,87 +36,99 @@ const MyBlogs = () => {
     fetchMyBlogs();
   }, []);
 
+
   const truncate = (text, limit) => {
     return text.length > limit ? text.slice(0, limit) + "..." : text;
   };
 
   const handleEdit = (e, id) => {
-    e.stopPropagation(); // prevent card click
+    e.stopPropagation();
     navigate(`/edit/${id}`);
   };
 
-  const handleDelete = async (e, id) => {
-    e.stopPropagation(); // prevent card click
-    const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
-    if (!confirmDelete) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8000/api/user/deleteblog/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setMyBlogs((prev) => prev.filter((blog) => blog.id !== id));
-    } catch (error) {
-      console.error("Failed to delete blog:", error.response?.data || error.message);
-    }
+  const confirmDelete = (e, id) => {
+    e.stopPropagation();
+    setDeleteId(id);
+    setShowModal(true);
   };
 
-  if (loading)
-    return <p className="text-center text-white py-10">Loading...</p>;
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:8000/api/user/deleteblog/${deleteId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+    
+      setMyBlogs((prev) => prev.filter((blog) => blog.id !== deleteId));
+    } catch (error) {
+      console.error("Failed to delete blog:", error.response?.data || error.message);
+    } finally {
+      setShowModal(false);
+      setDeleteId(null);
+    }
+  };
+  const defaultImage = "/images/no-image.png";
+
+  if (loading) return <p className="text-center text-white py-10">Loading...</p>;
 
   return (
-    <div className="flex flex-wrap justify-evenly gap-4 py-8 min-h-screen">
-      {myBlogs.length > 0 ? (
-        myBlogs.map((blog) => (
-          <div
-            key={blog.id}
-            className="flex flex-col justify-between p-4 w-[300px] h-[460px] m-4 rounded-4xl hover:border-[#A27B5C] border-2 hover:scale-105 transition-transform bg-[#212121] border-white"
-          >
-            <div
-              className="cursor-pointer"
-              onClick={() => navigate(`/detail/${blog.id}`)}
-            >
-              <img
-                src={
-                  blog.image
-                    ? `http://localhost:8000${blog.image}`
-                    : "/images/placeholder.jpg"
-                }
-                alt="blog"
-                className="rounded-2xl h-[160px] w-full object-cover"
-              />
-              <h2 className="p-2 text-2xl text-[#A27B5C] font-bold break-words">
-                {blog.title}
-              </h2>
-              <h4 className="p-2 text-md text-[#DCD7C9] break-words">
-                {truncate(blog.content || blog.desc, 250)}
-              </h4>
-            </div>
+  <div className="flex flex-wrap justify-evenly gap-6 py-10 px-4 min-h-screen bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9]">
+    {myBlogs.length > 0 ? (
+      myBlogs.map((blog) => (
+        
+        <div
+        key={blog.id}
+        onClick={() => navigate(`/detail/${blog.id}`)}
+        className="flex flex-col justify-between w-[300px] h-[480px] p-4 rounded-3xl border border-[#DCD7C9] bg-white/20 backdrop-blur-md text-[#2C3639] cursor-pointer hover:scale-[1.03] hover:shadow-lg transition-all duration-300 ease-in-out"
+        >
+          
+         
+          <div>
+            <img
+              src={
+                blog.image
+                  ? `http://localhost:8000${blog.image}`
+                  : defaultImage
+              }
+              alt="blog"
+              className="w-full h-[160px] object-cover rounded-xl mb-2 border border-[#DCD7C9]"
+            />
 
-            <div className="flex justify-between px-2 pt-2 mt-auto">
-              <button
-                onClick={(e) => handleEdit(e, blog.id)}
-                className="bg-[#A27B5C] text-white px-4 py-1 rounded hover:bg-[#8d6542] transition"
-              >
-                Edit
-              </button>
-              <button
-                onClick={(e) => handleDelete(e, blog.id)}
-                className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
-              >
-                Delete
-              </button>
-            </div>
+            <h2 className="text-2xl font-bold text-[#2C3639] mb-2 break-words">
+              {blog.title}
+            </h2>
+            <p className="text-[#3F4E4F] text-sm break-words">
+              {truncate(blog.content || blog.desc || "", 200)}
+            </p>
           </div>
-        ))
-      ) : (
-        <p className="text-white text-center w-full py-10">No blogs found.</p>
-      )}
-    </div>
-  );
-};
 
+          <div className="mt-2 flex justify-between items-center pt-2 border-t border-[#DCD7C9]">
+            <button
+              onClick={(e) => handleEdit(e, blog.id)}
+              className="bg-[#3F4E4F] hover:bg-[#2C3639] text-[#DCD7C9] text-sm font-semibold px-4 py-2 rounded-md transition-all"
+            >
+              Edit
+            </button>
+            <button
+              onClick={(e) => confirmDelete(e, blog.id)}
+              className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-md transition-all"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-[#2C3639] text-center w-full py-10">No blogs found.</p>
+    )}
+
+    <Modal
+      isOpen={showModal}
+      onClose={() => setShowModal(false)}
+      onConfirm={handleDelete}
+      title="Are you sure you want to delete this blog?"
+    />
+  </div>
+)}
 export default MyBlogs;

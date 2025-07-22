@@ -12,7 +12,7 @@ const Footer = () => {
             <input
               type="text"
               placeholder="Send us a message"
-              className="w-full p-2 border-2 border-gray-400 rounded-lg pr-12"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg pr-12 outline-none  "
             />
             <button className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 transition-all duration-300">
               <SendHorizontal />

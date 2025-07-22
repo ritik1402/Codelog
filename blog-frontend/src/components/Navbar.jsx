@@ -1,12 +1,10 @@
 import { useAuth } from "./context/AuthContext";
 import { useState } from "react";
-import AuthPage from "./AuthPage";
 import { useNavigate } from "react-router-dom";
 import { AlignJustify, DiamondPlus } from "lucide-react";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  // const [showAuthModal, setShowAuthModal] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,35 +25,36 @@ const Navbar = () => {
           </h1>
 
           <ul className="hidden md:flex gap-6 text-lg text-[#A27B5C] items-center">
-            <li
-              className="cursor-pointer hover:scale-125 transition"
-              onClick={() => navigate("/myblogs")}
-            >
-              MyBlogs
-            </li>
-            <li
-              className="cursor-pointer hover:scale-125 transition"
-              onClick={() => navigate("/create")}
-            >
-              Create
-            </li>
-            {user ? (
+            {user && (
               <>
+                <li
+                  className="cursor-pointer hover:underline transition-all duration-300"
+                  onClick={() => navigate("/myblogs")}
+                >
+                  MyBlogs
+                </li>
+                <li
+                  className="cursor-pointer hover:underline transition-all duration-300"
+                  onClick={() => navigate("/create")}
+                >
+                  Create
+                </li>
                 <li className="font-semibold">{user.username}</li>
                 <li>
                   <button
                     onClick={logout}
-                    className="hover:text-red-300 transition hover:scale-125"
+                    className="hover:underline hover:text-red-300 transition-all duration-300 cursor-pointer"
                   >
                     Logout
                   </button>
                 </li>
               </>
-            ) : (
+            )}
+            {!user && (
               <li>
                 <button
                   onClick={() => navigate("/auth")}
-                  className="hover:text-[#A27B5C] transition hover:scale-125"
+                  className="hover:underline hover:text-[#A27B5C] transition-all duration-300 cursor-pointer"
                 >
                   Login
                 </button>
@@ -66,13 +65,11 @@ const Navbar = () => {
           <div className="md:hidden">
             <AlignJustify
               size={28}
-              className="text-[#2C3639] cursor-pointer"
+              className="text-[#2C3639] cursor-pointer hover:scale-105"
               onClick={() => setMobileOpen(true)}
             />
           </div>
         </div>
-
-        
       </div>
 
       {mobileOpen && (
@@ -86,42 +83,52 @@ const Navbar = () => {
             </button>
 
             <ul className="flex flex-col gap-4 text-[#A27B5C] text-lg">
-              <li
-                onClick={() => {
-                  setMobileOpen(false);
-                  navigate("/auth");
-                }}
-                className="cursor-pointer hover:underline"
-              >
-                MyBlogs
-              </li>
-              <li
-                onClick={() => {
-                  navigate("/create");
-                  setMobileOpen(false);
-                }}
-                className="cursor-pointer hover:underline"
-              >
-                Create
-              </li>
+              {user ? (
+                <>
+                  <li
+                    onClick={() => {
+                      navigate("/myblogs");
+                      setMobileOpen(false);
+                    }}
+                    className="cursor-pointer hover:underline"
+                  >
+                    MyBlogs
+                  </li>
+                  <li
+                    onClick={() => {
+                      navigate("/create");
+                      setMobileOpen(false);
+                    }}
+                    className="cursor-pointer hover:underline"
+                  >
+                    Create
+                  </li>
+                  <li className="font-semibold">
+                    {" "}
+                    {`Hello ,${user.username}`}
+                  </li>
+                  <li
+                    onClick={handleLogout}
+                    className="cursor-pointer hover:text-red-400"
+                  >
+                    Logout
+                  </li>
+                </>
+              ) : (
+                <li
+                  onClick={() => {
+                    navigate("/auth");
+                    setMobileOpen(false);
+                  }}
+                  className="cursor-pointer hover:underline"
+                >
+                  Login
+                </li>
+              )}
             </ul>
           </div>
         </div>
       )}
-
-      {/* {showAuthModal && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center">
-          <div className="absolute top-4 right-4">
-            <button
-              onClick={() => setShowAuthModal(false)}
-              className="text-white text-3xl hover:text-red-400"
-            >
-              <DiamondPlus size={28} />
-            </button>
-          </div>
-          <AuthPage />
-        </div>
-      )} */}
     </>
   );
 };

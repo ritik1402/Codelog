@@ -27,7 +27,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="bg-[url(/images/bg.svg)] min-h-screen h-full w-full bg-cover bg-center bg-no-repeat z-0 bg-blend-overlay bg-[#7e8081]">
+      <div className="bg-[url(/images/bg.svg)] min-h-screen h-full w-full bg-cover bg-center bg-no-repeat z-0 bg-blend-darker bg-[#7e8081]">
         <Navbar />
 
     

@@ -48,74 +48,89 @@ const EditBlog = () => {
         },
       });
 
-      navigate("/");
+      navigate("/myblogs"); 
+
     } catch (error) {
       console.error("Failed to update blog:", error.response?.data || error.message);
     }
   };
 
   return (
-    <div className="min-h-screen px-4 py-8 text-[#DCD7C9]">
-      <h2 className="text-4xl font-bold text-[#A27B5C] text-center mb-6">Edit Blog</h2>
+  <div className="min-h-screen px-4 py-8 bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9] text-[#2C3639]">
+    <h2 className="text-4xl font-bold text-center mb-8 text-[#2C3639]">Edit Blog</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-2xl mx-auto bg-[#2C2C2C] p-6 rounded-2xl shadow-lg space-y-6 hover:border-[#A27B5C] hover:border-2 duration-300 ease-in-out"
-      >
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-2xl mx-auto bg-white/20 backdrop-blur-md border border-[#DCD7C9] p-8 rounded-3xl shadow-md space-y-6"
+    >
+      <div>
+        <label className="block text-lg font-semibold mb-2 text-[#A27B5C]">Title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full px-4 py-2 rounded-xl bg-[#3F4E4F] text-[#DCD7C9] placeholder-[#DCD7C9]/70 focus:outline-none focus:ring-2 focus:ring-[#2C3639]"
+          placeholder="Enter blog title"
+          required
+        />
+      </div>
+
+    
+      <div>
+        <label className="block text-lg font-semibold mb-2 text-[#A27B5C]">Content</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows="8"
+          className="w-full px-4 py-2 rounded-xl bg-[#3F4E4F] text-[#DCD7C9] placeholder-[#DCD7C9]/70 focus:outline-none focus:ring-2 focus:ring-[#2C3639]"
+          placeholder="Write your blog content here..."
+          required
+        />
+      </div>
+
+      
+      {existingImage && (
         <div>
-          <label className="block text-lg font-medium mb-1 text-[#A27B5C]">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 rounded bg-[#3E3E3E] text-white focus:outline-none"
-            placeholder="Enter blog title"
-            required
+          <p className="text-[#A27B5C] font-semibold mb-2">Existing Image:</p>
+          <img
+            src={`http://localhost:8000${existingImage}`}
+            alt="Blog"
+            className="w-[200px] h-[300px] object-cover rounded-xl border border-[#DCD7C9] mb-4"
           />
         </div>
+      )}
 
-        <div>
-          <label className="block text-lg font-medium mb-1 text-[#A27B5C]">Content</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows="8"
-            className="w-full px-4 py-2 rounded bg-[#3E3E3E] text-white focus:outline-none"
-            placeholder="Write your blog content here..."
-            required
-          />
-        </div>
+    
+      <div>
+        <label className="block text-lg font-semibold mb-2 text-[#A27B5C]">Upload New Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+          className="w-full px-4 py-2 rounded-xl bg-[#3F4E4F] text-[#DCD7C9] file:bg-[#2C3639] file:text-[#DCD7C9] file:font-semibold file:px-4 file:py-1 file:rounded file:border-0 cursor-pointer"
+        />
+      </div>
 
-        {existingImage && (
-          <div>
-            <p className="text-[#A27B5C] mb-2">Existing Image:</p>
-            <img
-              src={`http://localhost:8000${existingImage}`}
-              alt="Blog"
-              className="w-full max-h-[250px] object-cover rounded-xl mb-4"
-            />
-          </div>
-        )}
-
-        <div>
-          <label className="block text-lg font-medium mb-1 text-[#A27B5C]">Upload New Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-            className="text-white"
-          />
-        </div>
-
+      
+      <div className="flex justify-between">
         <button
           type="submit"
-          className="bg-[#A27B5C] text-white font-bold px-6 py-2 rounded hover:bg-[#8d6542] transition"
+          className="bg-[#2C3639] text-[#DCD7C9] font-bold px-6 py-2 rounded-xl hover:bg-[#3F4E4F] transition"
         >
           Update Blog
         </button>
-      </form>
-    </div>
-  );
+        <button
+          type="button"
+          onClick={() => navigate("/myblogs")}
+          className="bg-[#3F4E4F] text-[#DCD7C9] font-bold px-6 py-2 rounded-xl hover:bg-[#2C3639] transition"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+);
+
 };
 
 export default EditBlog;

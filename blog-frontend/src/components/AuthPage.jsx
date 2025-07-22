@@ -15,12 +15,12 @@ const AuthPage = () => {
         <p className="mt-4 text-center text-sm">
           {isLogin ? (
             <>
-              Don't have an account?{"user"}
+              Don't have an account ? 
               <button
                 onClick={() => setIsLogin(false)}
                 className="text-[#A27B5C] hover:underline"
               >
-                Sign up
+                 Sign up
               </button>
             </>
           ) : (

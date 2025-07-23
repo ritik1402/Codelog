@@ -4,7 +4,7 @@ const Modal = ({ isOpen, onClose, onConfirm, title }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-md">
       <div className="bg-[#2C3639] text-[#DCD7C9] rounded-xl shadow-xl p-6 w-[90%] max-w-md">
         <h2 className="text-xl font-bold mb-4">{title}</h2>
 

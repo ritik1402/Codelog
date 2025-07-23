@@ -11,6 +11,7 @@ import CreateBlog from "./components/CreateBlog";
 import EditBlog from './components/EditBlog';
 import ProtectedRoutes from './components/context/ProtectedRoutes';
 import Hero from "./components/Hero";
+import  { Toaster } from 'react-hot-toast';
 
 import { useEffect, useState } from 'react';
 
@@ -32,6 +33,19 @@ function App() {
 
     
          {/* {location.pathname === "/" && <Hero />} */}
+         <Toaster
+        position="top-center"
+        toastOptions={{
+          style: { background: "#363636", color: "#fff" },
+          success: {
+            duration: 2000,
+            iconTheme: {
+              primary: "green",
+              secondary: "black",
+            },
+          },
+        }}
+      />
 
         <Routes>
           <Route path="/" element={<><Hero/><Blogs /></>} />

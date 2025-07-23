@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 const Login = () => {
   const [formdata, setFormdata] = useState({ email: "", password: "" });
@@ -16,6 +17,9 @@ const Login = () => {
     e.preventDefault();
 
     if (!formdata.email || !formdata.password) {
+      toast.error("Please fill in all fields", {
+        style: { backgroundColor: "red" , color: "white" },
+      });
       console.log("Please enter both email and password");
       return;
     }
@@ -29,13 +33,19 @@ const Login = () => {
       const { user, token } = res.data;
 
       if (user && token) {
-        login(user, token); // store full user and token
+        login(user, token); 
+        toast.success("Login successful", {
+          style: { backgroundColor: "green" , color: "white" },
+        });
+        localStorage.setItem("user", JSON.stringify(user));
         console.log("Login successful");
         navigate("/");
       } else {
+        toast.error("Invalid email or password", {style: { backgroundColor: "red" , color: "white" }});
         console.log("Login failed: missing user or token");
       }
     } catch (error) {
+      toast.error("Login error", {style: { backgroundColor: "red" , color: "white" }});
       console.error("Login error:", error.response?.data || error.message);
     }
   };

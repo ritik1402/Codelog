@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
+import {toast} from 'react-hot-toast';
 
 const MyBlogs = () => {
   const navigate = useNavigate();
@@ -61,12 +62,18 @@ const MyBlogs = () => {
 
     
       setMyBlogs((prev) => prev.filter((blog) => blog.id !== deleteId));
-    } catch (error) {
-      console.error("Failed to delete blog:", error.response?.data || error.message);
-    } finally {
+      toast.success("Blog deleted successfully!", {
+        style: { backgroundColor: "green", color: "white" },
+      });
       setShowModal(false);
       setDeleteId(null);
-    }
+      
+    } catch (error) {
+      toast.error("Failed to delete blog",{
+        style: { backgroundColor: "red", color: "white" },
+      });
+      console.error("Failed to delete blog:", error.response?.data || error.message);
+    } 
   };
   const defaultImage = "/images/no-image.png";
 

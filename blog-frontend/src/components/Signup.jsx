@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { validateEmail, validatePassword } from "../utils/Validation";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -16,21 +18,47 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { email, password } = form;
+  
+    const emailResult = validateEmail(email);
+    if (!emailResult.valid) {
+      toast.error(emailResult.message, {
+        style: { background: "red", color: "white" },
+      });
+      return;
+    }
+
+    const passResult = validatePassword(password);
+    if (!passResult.valid) {
+      toast.error(passResult.message, {
+        style: { background: "red", color: "white" },
+      });
+      return;
+    }
     if(!form.username || !form.email || !form.password) {
-      alert("Please fill in all fields");
+      toast.error(passResult.message, {
+        style: { background: "red", color: "white" },
+      });
+      
       } else {
        const res = axios.post("http://localhost:8000/api/user/register",form)
          .then((response) => {
+          toast.success("Signup successful!", {
+            style: { background: "green", color: "white" },
+          },);
            console.log("Signup successful!", response.data);
          })
          
          .catch((error) => {
+          toast.error("Account already exists!", {
+            style: { background: "red", color: "white" },
+          });
            console.error("error in creating account", error);
          });
          
 
         }
-    console.log("Signup form submitted:", form);
+    // console.log("Signup form submitted:", form);
     navigate("/auth");
     
   };

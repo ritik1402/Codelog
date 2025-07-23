@@ -39,7 +39,7 @@ const Navbar = () => {
                 >
                   Create
                 </li>
-                <li className="font-semibold">{user.username}</li>
+                <li className="font-semibold"> {`Hello ,${user.username}`}</li>
                 <li>
                   <button
                     onClick={logout}
@@ -104,7 +104,7 @@ const Navbar = () => {
                     Create
                   </li>
                   <li className="font-semibold">
-                    {" "}
+                    {/* {" "} */}
                     {`Hello ,${user.username}`}
                   </li>
                   <li

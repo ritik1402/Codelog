@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./context/AuthContext";
 import Modal from "./Modal";
+import { EllipsisVertical } from 'lucide-react';
 
 const Blogs = () => {
   const navigate = useNavigate();
@@ -68,7 +69,8 @@ const Blogs = () => {
         return (
           <div
             key={blog.id}
-            className="flex flex-col p-4 w-[300px] h-[480px] m-4 rounded-3xl hover:scale-105 transition-transform duration-300 shadow-md border border-[#DCD7C9] bg-white/20 backdrop-blur-md"
+            className="flex flex-col p-4 w-[300px] h-[480px] m-4 rounded-3xl hover:scale-105 transition-transform duration-300 shadow-md border border-[#DCD7C9] bg-white/20 backdrop-blur-md cursor-pointer"
+            onClick={() => navigate(`/detail/${blog.id}`)}
           >
             <div
               className="cursor-pointer"

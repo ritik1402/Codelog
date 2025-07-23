@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import {toast} from 'react-hot-toast'
 
 const EditBlog = () => {
   const { id } = useParams();
@@ -47,11 +48,22 @@ const EditBlog = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      toast.success("Blog updated successfully!",{
+        style:{
+          backgroundColor:'green',color:'white'
+        }
+      });
 
       navigate("/myblogs"); 
 
     } catch (error) {
+      toast.error("Failed to update blog:",{
+        style:{
+          backgroundColor:'red',color:'white'
+        }
+      });
       console.error("Failed to update blog:", error.response?.data || error.message);
+
     }
   };
 
@@ -87,15 +99,14 @@ const EditBlog = () => {
           required
         />
       </div>
-
-      
+            
       {existingImage && (
         <div>
           <p className="text-[#A27B5C] font-semibold mb-2">Existing Image:</p>
           <img
             src={`http://localhost:8000${existingImage}`}
             alt="Blog"
-            className="w-[200px] h-[300px] object-cover rounded-xl border border-[#DCD7C9] mb-4"
+            className="w-[150px] h-[200px] object-cover rounded-xl border border-[#DCD7C9] mb-4"
           />
         </div>
       )}

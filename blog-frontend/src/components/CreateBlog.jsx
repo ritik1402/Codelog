@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import  {toast} from 'react-hot-toast';
 
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -30,10 +31,16 @@ const CreateBlog = () => {
           },
         }
       );
+      toast.success('Blog created successfully',{
+        style: {backgroundColor: 'green', color:'white'}
+      });
 
       console.log("Blog created successfully!", res.data);
       navigate("/");
     } catch (error) {
+      toast.error("Failed to create blog",{
+        style: {backgroundColor: 'red', color:'white'}
+      });
       console.error("Failed to create blog:", error.response?.data || error.message);
     }
   };
@@ -49,7 +56,7 @@ const CreateBlog = () => {
       className="max-w-2xl mx-auto bg-white/20 backdrop-blur-md border border-[#DCD7C9] p-8 rounded-3xl shadow-md space-y-6"
       encType="multipart/form-data"
     >
-      {/* Title */}
+ 
       <div>
         <label className="block text-lg font-semibold mb-2 text-[#2C3639]">
           Title
@@ -64,7 +71,6 @@ const CreateBlog = () => {
         />
       </div>
 
-      {/* Content */}
       <div>
         <label className="block text-lg font-semibold mb-2 text-[#2C3639]">
           Content
@@ -79,7 +85,7 @@ const CreateBlog = () => {
         />
       </div>
 
-      {/* Image Upload */}
+      
       <div>
         <label className="block text-lg font-semibold mb-2 text-[#2C3639]">
           Image
@@ -92,7 +98,6 @@ const CreateBlog = () => {
         />
       </div>
 
-      {/* Buttons */}
       <div className="flex justify-between">
         <button
           type="submit"

@@ -105,27 +105,27 @@ const DetailBlog = () => {
 
   const renderComments = (commentsList) => {
     return commentsList.map((comment) => (
-      <div
-        key={comment.id}
-        className="ml-4 mt-4  pl-4 border-[#A27B5C]"
-      >
-        <p className="text-[#DCD7C9]">{comment.content}</p>
-        <div>
-        <button
-          onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
-          className="text-sm text-black/50 hover:underline mt-1 cursor-pointer"
-        >
-          Reply
-        </button>
-        {user && user.id === comment.userId && (
+      <div key={comment.id} className="ml-4 mt-4  pl-4 border-[#A27B5C] ">
+        <p className="text-[#A27B5C] text-shadow-sm tracking-wider rounded-2xl bg-[#DCD7C9] p-2 pl-4 font-bold ">
+          {comment.content}
+        </p>
+        <div className="flex flex-row items-center gap-2 ml-4 mt-2">
           <button
-            onClick={() => handleDeleteComment(comment.id)}
-            className="text-sm text-red-700 font-bold tracking-wider hover:font-bold ml-2 hover:underline transition-all duration-300 ease-in-out cursor-pointer"
- 
+            onClick={() =>
+              setReplyTo(replyTo === comment.id ? null : comment.id)
+            }
+            className="text-sm text-black/50 hover:underline  cursor-pointer font-bold"
           >
-            Delete
+            Reply
           </button>
-        )}
+          {user && user.id === comment.userId && (
+            <button
+              onClick={() => handleDeleteComment(comment.id)}
+              className="text-sm text-red-700 font-bold tracking-wider hover:font-bold ml-2 hover:underline transition-all duration-300 ease-in-out cursor-pointer"
+            >
+              Delete
+            </button>
+          )}
         </div>
 
         {replyTo === comment.id && (

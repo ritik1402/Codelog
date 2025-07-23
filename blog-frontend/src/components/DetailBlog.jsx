@@ -85,7 +85,7 @@ const DetailBlog = () => {
         });
       } else {
         setCommentText("");
-        toast.success("Comment posted successfully", {
+        toast.success("Comment reply posted successfully", {
           style: { backgroundColor: "green", color: "white" },
         });
       }
@@ -107,24 +107,26 @@ const DetailBlog = () => {
     return commentsList.map((comment) => (
       <div
         key={comment.id}
-        className="ml-4 mt-4 border-l-2 pl-4 border-[#A27B5C]"
+        className="ml-4 mt-4  pl-4 border-[#A27B5C]"
       >
         <p className="text-[#DCD7C9]">{comment.content}</p>
-
+        <div>
         <button
           onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
-          className="text-sm text-[#A27B5C] underline mt-1"
+          className="text-sm text-black/50 hover:underline mt-1 cursor-pointer"
         >
           Reply
         </button>
         {user && user.id === comment.userId && (
           <button
             onClick={() => handleDeleteComment(comment.id)}
-            className="text-sm text-black underline ml-2 hover:underline transition-all duration-300"
+            className="text-sm text-red-700 font-bold tracking-wider hover:font-bold ml-2 hover:underline transition-all duration-300 ease-in-out cursor-pointer"
+ 
           >
             Delete
           </button>
         )}
+        </div>
 
         {replyTo === comment.id && (
           <div className="mt-2">
@@ -141,7 +143,7 @@ const DetailBlog = () => {
             ></textarea>
             <button
               onClick={() => handleComment(comment.id)}
-              className="bg-[#A27B5C] text-white px-4 py-1 rounded hover:bg-[#8d6542]"
+              className="bg-[#A27B5C] text-white px-4 py-1 rounded hover:bg-[#8d6542] cursor-pointer"
             >
               Post Reply
             </button>
@@ -170,8 +172,18 @@ const DetailBlog = () => {
           },
         }
       );
+      toast.success("Comment deleted successfully",{
+        style:{
+          backgroundColor: 'green',color: 'white',
+        }
+      });
       fetchComments();
     } catch (error) {
+      toast.error("Failed to delete comment",{
+        style:{
+          backgroundColor: 'red',color: 'white',
+        }
+        });
       console.log(
         "Failed to delete comment:",
         error.response?.data || error.message
@@ -209,12 +221,12 @@ const DetailBlog = () => {
             onDelete={() => setShowDeleteModal(true)}
           />
         </div>
-        <div className="flex  gap-4 mt-8">
+        <div className="flex flex-col gap-4 mt-8">
           {blog.image && (
             <img
               src={`http://localhost:8000${blog.image}`}
               alt="blog"
-              className="w-[350px] h-[400px] object-cover rounded-xl mb-6 border border-[#DCD7C9] shadow-md transition-all duration-500 "
+              className="w-100 h-100 object-cover rounded-xl mb-6 border  border-[#DCD7C9] shadow-md transition-all duration-500"
             />
           )}
           <div className="w-full p-4 border-2 rounded-2xl">
@@ -247,13 +259,15 @@ const DetailBlog = () => {
         />
 
         <button
-          className="bg-[#A27B5C] hover:bg-[#8d6542] text-white px-5 py-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
+          className="bg-[#A27B5C] hover:bg-[#8d6542] text-white px-5 py-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
           onClick={() => handleComment()}
         >
           Post Comment
         </button>
 
-        <div className="mt-6 animate-fade-in">{renderComments(comments)}</div>
+        <div className="mt-6 transition duration-300 ease-in-out">
+          {renderComments(comments)}
+        </div>
       </div>
 
       <Modal

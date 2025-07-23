@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./context/AuthContext";
 import Modal from "./Modal";
-import { EllipsisVertical } from 'lucide-react';
+import DropDown from "./DropDown";
 
 const Blogs = () => {
   const navigate = useNavigate();
@@ -53,6 +53,11 @@ const Blogs = () => {
     }
   };
 
+  const handleEdit = (e, id) => {
+    e.stopPropagation();
+    navigate(`/edit/${id}`);
+  };
+
   if (loading) {
     return <div className="text-[#2C3639] text-center py-20 text-xl">Loading blogs...</div>;
   }
@@ -69,46 +74,35 @@ const Blogs = () => {
         return (
           <div
             key={blog.id}
-            className="flex flex-col p-4 w-[300px] h-[480px] m-4 rounded-3xl hover:scale-105 transition-transform duration-300 shadow-md border border-[#DCD7C9] bg-white/20 backdrop-blur-md cursor-pointer"
+            className="relative flex flex-col p-4 w-[300px] h-[480px] m-4 rounded-3xl hover:scale-105 transition-transform duration-300 shadow-md border border-[#DCD7C9] bg-white/20 backdrop-blur-md cursor-pointer"
             onClick={() => navigate(`/detail/${blog.id}`)}
           >
-            <div
-              className="cursor-pointer"
-              onClick={() => navigate(`/detail/${blog.id}`)}
-            >
-              <img
-                src={blog.image ? `http://localhost:8000${blog.image}` : defaultImage}
-                alt={blog.title}
-                className="rounded-2xl h-[160px] w-full object-cover border border-[#DCD7C9]"
-              />
-
-              <h2 className="p-2 text-xl text-[#2C3639] font-bold break-words">
-                {blog.title}
-              </h2>
-              <h4 className="px-2 text-sm text-[#3F4E4F] break-words">
-                {truncate(blog.content, 250)}
-              </h4>
-            </div>
-
+            
+            
+            <div className="flex ">
+            <img
+              src={blog.image ? `http://localhost:8000${blog.image}` : defaultImage}
+              alt={blog.title}
+              className="rounded-2xl h-[160px] w-full object-cover border border-[#DCD7C9]"
+            />
             {user && user.id === blog.userId && (
-              <div className="mt-auto flex justify-between px-2 pt-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/edit/${blog.id}`);
-                  }}
-                  className="bg-[#3F4E4F] text-[#DCD7C9] px-4 py-1 rounded-lg hover:bg-[#2C3639] transition"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={(e) => confirmDelete(e, blog.id)}
-                  className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition"
-                >
-                  Delete
-                </button>
-              </div>
+              // <div
+              //   className="absolute top-4 right-4 z-10"
+              //   onClick={(e) => e.stopPropagation()}
+              // >
+                <DropDown
+                  onEdit={(e) => handleEdit(e, blog.id)}
+                  onDelete={(e) => confirmDelete(e, blog.id)}
+                />
+              // </div>
             )}
+            </div>
+            <h2 className="p-2 text-xl text-[#2C3639] font-bold break-words">
+              {blog.title}
+            </h2>
+            <h4 className="px-2 text-sm text-[#3F4E4F] break-words">
+              {truncate(blog.content, 250)}
+            </h4>
           </div>
         );
       })}

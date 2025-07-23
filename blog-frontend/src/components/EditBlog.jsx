@@ -132,7 +132,7 @@ const EditBlog = () => {
         </button>
         <button
           type="button"
-          onClick={() => navigate("/myblogs")}
+          onClick={() => navigate(-1)}
           className="bg-[#3F4E4F] text-[#DCD7C9] font-bold px-6 py-2 rounded-xl hover:bg-[#2C3639] transition"
         >
           Cancel

@@ -41,7 +41,7 @@ const DropDown = ({ onEdit, onDelete }) => {
         <button onClick={handleEdit} className="cursor-pointer">
           Edit
         </button>
-        <button onClick={handleDelete} className="cursor-pointer mt-1">
+        <button onClick={handleDelete} className="cursor-pointer mt-1 border-t-1 border-[#A27B5C]">
           Delete
         </button>
       </div>

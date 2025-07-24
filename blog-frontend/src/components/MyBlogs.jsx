@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import DropDown from "./DropDown";
 import { toast } from "react-hot-toast";
+import Loadder from "./Loadder";
+import { fetchMyBlogs } from "./Services/apiServices";
 
 const MyBlogs = () => {
   const navigate = useNavigate();
@@ -12,30 +14,22 @@ const MyBlogs = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const fetchMyBlogs = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const res = await axios.get("http://localhost:8000/api/user/myblogs", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setMyBlogs(res.data);
-    } catch (error) {
-      console.error("Error fetching user's blogs:", error.response?.data || error.message);
-      if (error.response?.status === 401) navigate("/login");
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   useEffect(() => {
-    fetchMyBlogs();
-  }, []);
+      const loadBlogs = async () => {
+       
+        try {
+          const data = await fetchMyBlogs();
+          setMyBlogs(data);
+        } catch (error) {
+          console.error("error in fetching my blog:",error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      loadBlogs();
+    }, []);
 
   const truncate = (text, limit) => {
     return text.length > limit ? text.slice(0, limit) + "..." : text;
@@ -75,7 +69,7 @@ const MyBlogs = () => {
 
   const defaultImage = "/images/no-image.png";
 
-  if (loading) return <p className="text-center text-white py-10">Loading...</p>;
+  if (loading) return <Loadder/>
 
   return (
     <div className="flex flex-wrap justify-evenly gap-6 py-10 px-4 min-h-screen bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9] relative">

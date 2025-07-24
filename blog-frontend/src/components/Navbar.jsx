@@ -134,6 +134,7 @@ const Navbar = () => {
           <ul className="flex flex-col gap-4 text-[#A27B5C] text-lg">
             {user ? (
               <>
+              <li className="font-semibold">{`Hello ,${user.username}`}</li>
                 <li
                   onClick={() => {
                     navigate("/myblogs");
@@ -152,7 +153,7 @@ const Navbar = () => {
                 >
                   Create
                 </li>
-                <li className="font-semibold">{`Hello ,${user.username}`}</li>
+                
                 <li
                   onClick={handleLogout}
                   className="cursor-pointer hover:text-red-400"

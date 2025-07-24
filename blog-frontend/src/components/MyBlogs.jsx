@@ -108,7 +108,7 @@ const MyBlogs = () => {
                 {/* </div> */}
               </div>
 
-              <h2 className="text-2xl font-bold text-[#2C3639] mb-2 break-words">
+              <h2 className="text-2xl font-bold text-[#2C3639] mb-2 break-words uppercase">
                 {blog.title}
               </h2>
               <p className="text-[#3F4E4F] text-sm break-words">

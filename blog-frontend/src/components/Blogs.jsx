@@ -97,7 +97,7 @@ const Blogs = () => {
               // </div>
             )}
             </div>
-            <h2 className="p-2 text-xl text-[#2C3639] font-bold break-words">
+            <h2 className="p-2 text-xl text-[#2C3639] font-bold break-words uppercase">
               {blog.title}
             </h2>
             <h4 className="px-2 text-sm text-[#3F4E4F] break-words">

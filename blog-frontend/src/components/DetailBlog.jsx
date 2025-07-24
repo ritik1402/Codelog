@@ -105,8 +105,8 @@ const DetailBlog = () => {
 
   const renderComments = (commentsList) => {
     return commentsList.map((comment) => (
-      <div key={comment.id} className="ml-4 mt-4  pl-4 border-[#A27B5C] ">
-        <p className="text-[#A27B5C] text-shadow-sm tracking-wider rounded-2xl bg-[#DCD7C9] p-2 pl-4 font-bold ">
+      <div key={comment.id} className=" mt-4  ml-4 border-[#A27B5C] ">
+        <p className="text-[#A27B5C] text-shadow-sm tracking-wider rounded-2xl bg-[#DCD7C9] p-2 pl-4  font-bold ">
           {comment.content}
         </p>
         <div className="flex flex-row items-center gap-2 ml-4 mt-2">
@@ -151,7 +151,7 @@ const DetailBlog = () => {
         )}
 
         {comment.replies && comment.replies.length > 0 && (
-          <div className="ml-4">{renderComments(comment.replies)}</div>
+          <div className="">{renderComments(comment.replies)}</div>
         )}
       </div>
     ));
@@ -212,8 +212,8 @@ const DetailBlog = () => {
   return (
     <div className="p-6 min-h-screen  bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9] text-[#2C3639] transition-colors duration-500 ease-in-out">
       <div className="max-w-7xl mx-auto p-6 relative">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl text-center font-bold text-[#2C3639] mb-4 transition-all duration-300">
+        <div className="flex justify-between items-center ">
+          <h1 className="text-4xl text-center font-bold text-[#2C3639] mb-4 transition-all duration-300 tracking-widest text-shadow-amber-400 uppercase">
             {blog.title}
           </h1>
           <DropDown
@@ -230,7 +230,7 @@ const DetailBlog = () => {
             />
           )}
           <div className="w-full p-4 border-2 rounded-2xl">
-            <p className="text-lg text-[#3F4E4F] mb-6 leading-relaxed transition-opacity duration-500 ease-in-out text-justify">
+            <p className="text-lg text-[#000000] mb-6 leading-relaxed transition-opacity duration-500 ease-in-out text-justify tracking-wide p-4">
               {blog.content}
             </p>
           </div>
@@ -246,7 +246,7 @@ const DetailBlog = () => {
         <hr className="my-6 border-[#3F4E4F] transition-opacity duration-300" />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 max-w-7xl  mx-auto ">
         <h2 className="text-2xl text-[#2C3639] font-semibold mb-2 transition-all duration-300">
           Comments
         </h2>

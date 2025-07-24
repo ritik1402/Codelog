@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { EllipsisVertical } from 'lucide-react'; 
+import { EllipsisVertical } from 'lucide-react';
 
-const DropDown = ({ onEdit, onDelete }) => { 
+const DropDown = ({ onEdit, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     setIsOpen(!isOpen);
   };
 
@@ -29,22 +29,22 @@ const DropDown = ({ onEdit, onDelete }) => {
       >
         <EllipsisVertical />
       </button>
-      {isOpen && (
-        <div className="dropdown-menu flex flex-col mt-4 absolute top-2 right-2 w-40 rounded-lg shadow-lg p-2 bg-black text-[#DCD7C9] font-medium transition-all duration-700 ease-in-out">
-          <button
-            onClick={handleEdit}
-            className="dropdown-item-button cursor-pointer"
-          >
-            Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="dropdown-item-button cursor-pointer mt-1"
-          >
-            Delete
-          </button>
-        </div>
-      )}
+
+      <div
+        className={`
+          absolute top-2 right-2 mt-4 w-40 rounded-lg shadow-lg p-2 
+          bg-white text-black font-medium flex flex-col 
+          transition-all duration-300 ease-in-out transform 
+          ${isOpen ? 'opacity-100 scale-100 translate-y-0 ' : 'opacity-0 scale-95 -translate-y-2'}
+        `}
+      >
+        <button onClick={handleEdit} className="cursor-pointer">
+          Edit
+        </button>
+        <button onClick={handleDelete} className="cursor-pointer mt-1">
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

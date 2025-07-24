@@ -4,25 +4,28 @@ import { useAuth } from "./context/AuthContext";
 import Modal from "./Modal";
 import DropDown from "./DropDown";
 import Loadder from "./Loadder";
-import { fetchBlogs, deleteBlog } from "./Services/apiServices";
+import { fetchBlogs, deleteBlog } from "./Services/blogServices";
 
 const Blogs = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
+
+  const [global, setGlobal] = useState({
+    blogs: [],
+    loading: true,
+    showModal: false,
+    deleteId: null,
+  });
 
   useEffect(() => {
     const loadBlogs = async () => {
       try {
         const data = await fetchBlogs();
-        setBlogs(data);
+        setGlobal((prev) => ({ ...prev, blogs: data }));
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false);
+        setGlobal((prev) => ({ ...prev, loading: false }));
       }
     };
     loadBlogs();
@@ -33,20 +36,21 @@ const Blogs = () => {
 
   const confirmDelete = (e, id) => {
     e.stopPropagation();
-    setDeleteId(id);
-    setShowModal(true);
+    setGlobal((prev) => ({ ...prev, deleteId: id, showModal: true }));
   };
 
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem("token");
-      await deleteBlog(deleteId);
-      setBlogs((prev) => prev.filter((b) => b.id !== deleteId));
+      await deleteBlog(global.deleteId);
+      setGlobal((prev) => ({
+        ...prev,
+        blogs: prev.blogs.filter((b) => b.id !== prev.deleteId),
+        showModal: false,
+        deleteId: null,
+      }));
     } catch (error) {
       console.error("Delete failed:", error);
-    } finally {
-      setShowModal(false);
-      setDeleteId(null);
+      setGlobal((prev) => ({ ...prev, showModal: false, deleteId: null }));
     }
   };
 
@@ -55,9 +59,9 @@ const Blogs = () => {
     navigate(`/edit/${id}`);
   };
 
-  if (loading) return <Loadder />;
+  if (global.loading) return <Loadder />;
 
-  if (!blogs.length) {
+  if (!global.blogs.length) {
     return (
       <div className="text-[#2C3639] text-center py-20 text-xl">
         No blogs found.
@@ -67,7 +71,7 @@ const Blogs = () => {
 
   return (
     <div className="flex flex-wrap justify-evenly gap-4 py-8 min-h-screen bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9]">
-      {blogs.map((blog) => {
+      {global.blogs.map((blog) => {
         const defaultImage = "/images/no-image.png";
 
         return (
@@ -103,8 +107,10 @@ const Blogs = () => {
         );
       })}
       <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        isOpen={global.showModal}
+        onClose={() =>
+          setGlobal((prev) => ({ ...prev, showModal: false, deleteId: null }))
+        }
         onConfirm={handleDelete}
         title="Are you sure you want to delete this blog?"
       />

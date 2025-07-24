@@ -6,6 +6,8 @@ import Modal from "./Modal";
 import { toast } from "react-hot-toast";
 import DropDown from "./DropDown";
 import { ChevronDown } from "lucide-react";
+import { CircleArrowLeft } from 'lucide-react';
+import Loadder from "./Loadder";
 
 const DetailBlog = () => {
   const { id } = useParams();
@@ -18,11 +20,24 @@ const DetailBlog = () => {
   const [replyTexts, setReplyTexts] = useState({});
   const [replyTo, setReplyTo] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [loading,setLoading] = useState(true);
+
+  // const [detblog,setDetBlog] = useState({
+  //   blog: [],
+  //   comments: [],
+  //   commentText: '',
+  //   replyTexts: {},
+  //   replyTo: null,
+  //   showDeleteModal: false,
+
+  // })
 
   useEffect(() => {
     fetchBlog();
     fetchComments();
   }, [id]);
+
+
 
   const fetchBlog = async () => {
     try {
@@ -39,6 +54,9 @@ const DetailBlog = () => {
         "Failed to fetch blog:",
         error.response?.data || error.message
       );
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -80,12 +98,12 @@ const DetailBlog = () => {
       );
       if (parentId) {
         setReplyTexts((prev) => ({ ...prev, [parentId]: "" }));
-        toast.success("Comment posted successfully", {
+        toast.success("Comment reply posted successfully", {
           style: { backgroundColor: "green", color: "white" },
         });
       } else {
         setCommentText("");
-        toast.success("Comment reply posted successfully", {
+        toast.success("Comment posted successfully", {
           style: { backgroundColor: "green", color: "white" },
         });
       }
@@ -102,6 +120,10 @@ const DetailBlog = () => {
       );
     }
   };
+
+  if(loading){
+  return <Loadder/>
+}
 
   const renderComments = (commentsList) => {
     return commentsList.map((comment) => (
@@ -216,10 +238,16 @@ const DetailBlog = () => {
           <h1 className="text-4xl text-center font-bold text-[#2C3639] mb-4 transition-all duration-300 tracking-widest text-shadow-amber-400 uppercase">
             {blog.title}
           </h1>
-          <DropDown
+          <div className="flex items-center space-x-4">
+          {user && user.id === blog.userId && (
+            <DropDown
             onEdit={handleEdit}
             onDelete={() => setShowDeleteModal(true)}
           />
+          )} 
+           <CircleArrowLeft onClick={()=> navigate(-1)} />
+          </div>
+           
         </div>
         <div className="flex flex-col gap-4 mt-8">
           {blog.image && (
@@ -246,7 +274,7 @@ const DetailBlog = () => {
         <hr className="my-6 border-[#3F4E4F] transition-opacity duration-300" />
       </div>
 
-      <div className="mt-4 max-w-7xl  mx-auto ">
+      <div className="mt-4 max-w-7xl mx-auto px-4  ">
         <h2 className="text-2xl text-[#2C3639] font-semibold mb-2 transition-all duration-300">
           Comments
         </h2>

@@ -43,23 +43,4 @@ export const deleteBlog = async (id) => {
     } 
   };
 
- export  const handleDelete = async () => {
-    try {
-      
-      await axios.delete(`${API_URL}/deleteblog/${deleteId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      return ((prev) => prev.filter((blog) => blog.id !== deleteId));
-      toast.success("Blog deleted successfully!", {
-        style: { backgroundColor: "green", color: "white" },
-      });
-      setShowModal(false);
-      setDeleteId(null);
-    } catch (error) {
-      toast.error("Failed to delete blog", {
-        style: { backgroundColor: "red", color: "white" },
-      });
-      console.error("Failed to delete blog:", error.response?.data || error.message);
-    }
-  };
+ 

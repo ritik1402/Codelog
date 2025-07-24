@@ -35,7 +35,7 @@ const DropDown = ({ onEdit, onDelete }) => {
           absolute top-2 right-2 mt-4 w-40 rounded-lg shadow-lg p-2 
           bg-white text-black font-medium flex flex-col 
           transition-all duration-300 ease-in-out transform 
-          ${isOpen ? 'opacity-100 scale-100 translate-y-0 ' : 'opacity-0 scale-95 -translate-y-2'}
+          ${isOpen ? 'block scale-100 translate-y-0 ' : 'hidden scale-95 -translate-y-2'}
         `}
       >
         <button onClick={handleEdit} className="cursor-pointer">

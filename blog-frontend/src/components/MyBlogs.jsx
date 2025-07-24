@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import DropDown from "./DropDown";
 import { toast } from "react-hot-toast";
 import Loadder from "./Loadder";
-import { fetchMyBlogs } from "./Services/apiServices";
+import { fetchMyBlogs } from "./Services/blogServices";
 
 const MyBlogs = () => {
   const navigate = useNavigate();
@@ -14,22 +14,19 @@ const MyBlogs = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  
-
   useEffect(() => {
-      const loadBlogs = async () => {
-       
-        try {
-          const data = await fetchMyBlogs();
-          setMyBlogs(data);
-        } catch (error) {
-          console.error("error in fetching my blog:",error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      loadBlogs();
-    }, []);
+    const loadBlogs = async () => {
+      try {
+        const data = await fetchMyBlogs();
+        setMyBlogs(data);
+      } catch (error) {
+        console.error("error in fetching my blog:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBlogs();
+  }, []);
 
   const truncate = (text, limit) => {
     return text.length > limit ? text.slice(0, limit) + "..." : text;
@@ -49,9 +46,12 @@ const MyBlogs = () => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8000/api/user/deleteblog/${deleteId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `http://localhost:8000/api/user/deleteblog/${deleteId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setMyBlogs((prev) => prev.filter((blog) => blog.id !== deleteId));
       toast.success("Blog deleted successfully!", {
@@ -63,13 +63,16 @@ const MyBlogs = () => {
       toast.error("Failed to delete blog", {
         style: { backgroundColor: "red", color: "white" },
       });
-      console.error("Failed to delete blog:", error.response?.data || error.message);
+      console.error(
+        "Failed to delete blog:",
+        error.response?.data || error.message
+      );
     }
   };
 
   const defaultImage = "/images/no-image.png";
 
-  if (loading) return <Loadder/>
+  if (loading) return <Loadder />;
 
   return (
     <div className="flex flex-wrap justify-evenly gap-6 py-10 px-4 min-h-screen bg-gradient-to-br from-[#A27B5C] to-[#DCD7C9] relative">
@@ -95,10 +98,10 @@ const MyBlogs = () => {
                   className="absolute  z-10"
                   onClick={(e) => e.stopPropagation()}
                 > */}
-                  <DropDown
-                    onEdit={(e) => handleEdit(e, blog.id)}
-                    onDelete={(e) => confirmDelete(e, blog.id)}
-                  />
+                <DropDown
+                  onEdit={(e) => handleEdit(e, blog.id)}
+                  onDelete={(e) => confirmDelete(e, blog.id)}
+                />
                 {/* </div> */}
               </div>
 

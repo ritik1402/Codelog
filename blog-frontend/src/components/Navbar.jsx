@@ -104,7 +104,7 @@ const Navbar = () => {
          
           <div className="md:hidden">
             <img
-              src="./images/user.png"
+              src="/images/user.png"
               className="cursor-pointer rounded-full h-12 w-12"
               onClick={() => setMobileOpen(true)}
               alt="User"
